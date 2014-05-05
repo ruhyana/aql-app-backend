@@ -27,4 +27,9 @@
  function getAppId() {
     return 'aql';
  }
+
+ function get_gcm_api_key() {
+    return 'AIzaSyDfX3S4TiDPZoExzBeierI_piUoI5MDIS8';
+
+ }
 ?>

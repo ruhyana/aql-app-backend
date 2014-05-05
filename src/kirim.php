@@ -4,7 +4,7 @@
   //ini_set('display_errors',1);
   //error_reporting(E_ALL);
 
-  include 'database.php';
+  include 'config.php';
   include 'image.php';
 
   $input_title = $_REQUEST['title'];
@@ -82,7 +82,7 @@ if ($pwd === getSendpassword()) {
  
 function sendMessageToPhone($deviceToken, $collapseKey, $messageText, $title, $updateId, $imageExist)    
 {    
-    $yourKey = 'AIzaSyDfX3S4TiDPZoExzBeierI_piUoI5MDIS8';  
+    $yourKey = get_gcm_api_key();  
 
     $headers = array('Authorization:key=' . $yourKey, 'Content-Type: application/json');    
 
@@ -103,12 +103,10 @@ function sendMessageToPhone($deviceToken, $collapseKey, $messageText, $title, $u
     
     $response = curl_exec($ch);    
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);    
-    if (curl_errno($ch)) {    
-        //request failed    
+    if (curl_errno($ch)) {        
         return false;//probably you want to return false    
     }    
     if ($httpCode != 200) {     
-        //request failed    
         return false;//probably you want to return false    
     }    
 
@@ -128,7 +126,6 @@ function sendMessageToPhone($deviceToken, $collapseKey, $messageText, $title, $u
 
        if (isset($error_msg)) {
           if ($error_msg === 'NotRegistered') {
-             //echo $old_reg_id . " is not registered, deleted from database"; 
              $query = "DELETE FROM mobile_reg WHERE reg_id = '" . $old_reg_id . "';";
              mysql_query($query) or die(mysql_error());
           } else if ($error_msg === 'InvalidRegistration') {
@@ -138,7 +135,6 @@ function sendMessageToPhone($deviceToken, $collapseKey, $messageText, $title, $u
           }
        } 
        if (isset($new_reg_id)) {
-           //echo $old_reg_id . " needs a new registration id, replacing with a new one";
            $query = "UPDATE mobile_reg set reg_id = '" . $new_reg_id . "' WHERE reg_id = '" . $old_reg_id . "';";
            mysql_query($query) or die(mysql_error());
        }
@@ -156,10 +152,9 @@ function sendMessageToPhone($deviceToken, $collapseKey, $messageText, $title, $u
     return $response;    
 } 
 
-// return our current unix time in millis
    function current_millis() {
-    list($usec, $sec) = explode(" ", microtime());
-    return round(((float)$usec + (float)$sec) * 1000);
+     list($usec, $sec) = explode(" ", microtime());
+     return round(((float)$usec + (float)$sec) * 1000);
    }
 ?> 
 
