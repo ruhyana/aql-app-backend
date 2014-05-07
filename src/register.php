@@ -1,7 +1,7 @@
 <?php
   //ini_set('display_errors',1);
   //error_reporting(E_ALL);
-  include 'database.php';
+  include 'config.php';
 
   $reg_id = $_REQUEST['reg_id'];
   $phone_id = $_REQUEST['phone_id'];
